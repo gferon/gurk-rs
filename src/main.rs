@@ -65,9 +65,7 @@ async fn main() -> anyhow::Result<()> {
     }
     log_panics::init();
 
-    tokio::task::LocalSet::new()
-        .run_until(run_single_threaded(args.relink))
-        .await
+    run(args.relink).await
 }
 
 async fn is_online() -> bool {
@@ -76,7 +74,7 @@ async fn is_online() -> bool {
         .is_ok()
 }
 
-async fn run_single_threaded(relink: bool) -> anyhow::Result<()> {
+async fn run(relink: bool) -> anyhow::Result<()> {
     let mut app = App::try_new(relink).await?;
 
     enable_raw_mode()?;
